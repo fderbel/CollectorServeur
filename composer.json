@@ -1,5 +1,5 @@
 {
-    "name":             "Coat/Ktbs",
+    "name":             "coat/ktbs",
     "type":             "library",
     "description":      "A PHP5 library that Collect traces.",
     "keywords":         ["traces", "Ktbs"],
