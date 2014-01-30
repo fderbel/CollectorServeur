@@ -146,7 +146,6 @@ public $ResourceType=null;
 		if ($this->ResourcePath) {$statements[] = "<".$this->name."> :hasTool_ResourcePath ".'"'.$this->ResourcePath.'"'." .";}
 		if ($this->ResourceType) {$statements[] = "<".$this->name."> :hasTool_ResourceType ".'"'.$this->ResourceType.'"'." .";}
 		if ($this->oldName) {$statements[] = "<".$this->name."> :hasTool_OldName ".'"'.$this->oldName.'"'." .";}
-		// forum
 		if ($this->newName) {$statements[] = "<".$this->name."> :hasTool_NewName ".'"'.$this->newName.'"'." .";}
 		if ($this->CategoryId) {$statements[] = "<".$this->name."> :hasTool_CategoryId ".'"'.$this->CategoryId.'"'." .";}
 		
@@ -157,7 +156,6 @@ public $ResourceType=null;
 		if ($this->subjectNew_title) {$statements[] = "<".$this->name."> :hasTool_subjectNew_title ".'"'.$this->subjectNew_title.'"'." .";}
 		if ($this->MessageOldContent) {$statements[] = "<".$this->name."> :hasTool_MessageOldContent ".'"'.$this->MessageOldContent.'"'." .";}
 		if ($this->Messagenew_content) {$statements[] = "<".$this->name."> :hasTool_Messagenew_content ".'"'.$this->Messagenew_content.'"'." .";}
-		//blog
 		if ($this->postTitle) {$statements[] = "<".$this->name."> :hasTool_Post_Title ".'"'.$this->postTitle.'"'." .";}
 		
 		
@@ -165,7 +163,37 @@ public $ResourceType=null;
 		
 		
 		
-	$this->script = implode("\n", $prefixes)."\n"
+		
+		
+		
+		
+		
+		
+		 
+		
+		
+		
+			
+	//	$statements[] = "<".$this->name."> :action ".'"'.$this->action.'"'." .";
+	//	$statements[] = "<".$this->name."> :toolName ".'"'.$this->toolName.'"'." .";
+	//	$statements[] = "<".$this->name."> :IsDisplayedInAdmin ".'"'.$this->IsDisplayedInAdmin.'"'." .";
+    //    $statements[] = "<".$this->name."> :ReceiverGroup ".'"'.$this->ReceiverGroup.'"'." .";
+       // $statements[] = "<".$this->name."> :Workspace ".'"'.$this->Workspace.'"'." .";
+       // $statements[] = "<".$this->name."> :ResourceNode ".'"'.$this->ResourceNode.'"'." .";
+       // $statements[] = "<".$this->name."> :Role ".'"'.$this->Role.'"'." .";
+        //$statements[] = "<".$this->name."> :Owner ".'"'.$this->Owner.'"'." .";
+        //$statements[] = "<".$this->name."> :DoerPlatformRole ".'"'.$this->DoerPlatformRole.'"'." .";
+       // $statements[] = "<".$this->name."> :DoerWorkspaceRole ".'"'.$this->DoerWorkspaceRole.'"'." .";
+        
+      // $statements[] = "<".$this->name."> :username".'"'.$this->doer.'"'." .";
+               
+       
+       
+       
+       // $statements[] = "<".$this->name."> :doer ".'"'.$this->doer.'"'." .";
+		
+
+		$this->script = implode("\n", $prefixes)."\n"
 						.implode("\n", $statements);
 		
 		$this->numAttr = count($statements);
