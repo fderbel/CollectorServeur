@@ -1,6 +1,6 @@
 <?php
 
-namespace Ktbs\Coat
+namespace Coat\Ktbs;
 
 
 use Claroline\CoreBundle\Event\Log\LogGenericEvent;
@@ -20,7 +20,7 @@ use Claroline\CoreBundle\Event\Log\LogRoleSubscribeEvent;
 use Claroline\CoreBundle\Event\Log\LogUserLoginEvent;
 use Claroline\CoreBundle\Event\Log\LogWorkspaceToolReadEvent;
 use Claroline\CoreBundle\Event\Log\LogUserCreateEvent;
-use Ktbs\Coat\KtbsConfig;
+use Coat\Ktbs\KtbsConfig;
 
 
 /**
@@ -58,7 +58,7 @@ class KTBSListener
         $this->roleManager = $roleManager;
     }
 
-    private function createLog(LogGenericEvent $event)
+    public function createLog(LogGenericEvent $event)
     {
         //Add doer details
         $doer = null;
@@ -241,71 +241,15 @@ class KTBSListener
 	                    }
     }
 
+   
     /**
-     * Is a repeat if the session contains a same logSignature for the same action category
-     */
-    private function isARepeat(LogGenericEvent $event)
-    {
-        if ($this->securityContext->getToken() === null) {
-            //Only if have a user session;
-            return false;
-        }
-
-        if ($event instanceof LogNotRepeatableInterface) {
-            $request = $this->container->get('request');
-            $session = $request->getSession();
-
-            $is = false;
-            $pushInSession = true;
-            $now = time();
-
-            //if ($session->get($event->getAction()) != null) {
-            if ($session->get($event->getLogSignature()) != null) {
-                //$oldArray = json_decode($session->get($event->getAction()));
-                $oldArray = json_decode($session->get($event->getLogSignature()));
-                $oldSignature = $oldArray->logSignature;
-                $oldTime = $oldArray->time;
-
-                if ($oldSignature == $event->getLogSignature()) {
-                    $diff = ($now - $oldTime);
-                    $notRepeatableLogTimeInSeconds = $this->container->getParameter(
-                        'non_repeatable_log_time_in_seconds'
-                    );
-
-                    if ($event->getIsWorkspaceEnterEvent()) {
-                        $notRepeatableLogTimeInSeconds = $notRepeatableLogTimeInSeconds * 3;
-                    }
-
-                    if ($diff > $notRepeatableLogTimeInSeconds) {
-                        $is = false;
-                    } else {
-                        $is = true;
-                        $pushInSession = false;
-                    }
-                }
-            }
-
-            if ($pushInSession) {
-                //Update last logSignature for this event category
-                $array = array('logSignature' => $event->getLogSignature(), 'time' => $now);
-                //$session->set($event->getAction(), json_encode($array));
-                $session->set($event->getLogSignature(), json_encode($array));
-            }
-
-            return $is;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @DI\Observe("log")
+     * @DI\Observe("ktbs")
      *
      * @param LogGenericEvent $event
      */
     public function onLog(LogGenericEvent $event)
     {
-         dump_var
+         
           
         //if (!($event instanceof LogNotRepeatableInterface) or !$this->isARepeat($event)) {
             $this->createLog($event);

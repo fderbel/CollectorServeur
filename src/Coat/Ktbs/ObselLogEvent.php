@@ -33,39 +33,20 @@ public $subjectNew_title = null;
 public $MessageOldContent = null;
 public $Messagenew_content = null;
 public $postTitle = null ;
-
-
-public $action = null;
-public $toolName = null;
-public $IsDisplayedInAdmin = null;
-public $IsDisplayedInWorkspace = null;
-public $IsOwner = null;
-public $doer = null ;
-public $DoerType=null;
-public $DoerIp=null;
-public $ReceiverGroup=null;
-public $Workspace=null;
-public $ResourceNode=null;
-public $Role=null;
-public $DoerPlatformRole=null;
-public $DoerWorkspaceRole=null;
-public $ResourceType=null;
-
-
-
-
-	public function __construct($model_uri,$trace_uri)
+public $ResourceNode =null;
+public $ResourceType = null ;
+public function __construct($model_uri,$trace_uri)
 	{
-		$this->model_uri = $model_uri;
+		$this->model_uri = $model_uri."/";
 		$this->trace_uri = $trace_uri;
 	}	
-	
-	public function load($log){
+public function load($log)
+{
 	    
 	    $this->name      ="S_".$log->getAction()."_".rand();	
         $this->uri       = $this->trace_uri.$this->name;
 		$this->hasDate   = $log->getDateLog()->format('Y-m-d H:i:s');
-		$this->Subject   ="Obsel of Action : ".$log->getAction();
+		$this->Subject   ="Obsel of Trace : ".$this->trace_uri;
 		$this->type      = $this->model_uri.$log->getAction();
 		// user information
 		$this->UserID    =$log->getDoer()->getId();
@@ -104,26 +85,7 @@ public $ResourceType=null;
 		$this->postTitle = $details['post']['title'];
 		
 		}
-		
-		//$this->ToolType = $log->getResourceType();
-		
-		$this->action = $log->getAction();
-        $this->toolName = $log->getToolName();
-        $this->IsDisplayedInAdmin = $log->isDisplayedInAdmin();
-        $this->IsDisplayedInWorkspace = $log->isDisplayedInWorkspace();
-        $this->Owner = $log->getOwner();
-        $this->doer = $log->getDoer()->getUsername();
-        $this->DoerType = $log->getDoerType();
-        $this->DoerIp = $log->getDoerIp();
-        $this->ReceiverGroup = $log->getReceiverGroup();
-        
-        
-        $this->Role = $log->getRole();
-        $this->DoerPlatformRole = $log->getDoerPlatformRoles();
-        $this->DoerWorkspaceRole = $log->getDoerWorkspaceRoles();
-
-		
-	}
+}
 
 	public function dump(){
 	
@@ -160,18 +122,10 @@ public $ResourceType=null;
 		//blog
 		if ($this->postTitle) {$statements[] = "<".$this->name."> :hasTool_Post_Title ".'"'.$this->postTitle.'"'." .";}
 		
-		
-		
-		
-		
-		
-	$this->script = implode("\n", $prefixes)."\n"
+	    $this->script = implode("\n", $prefixes)."\n"
 						.implode("\n", $statements);
-		
 		$this->numAttr = count($statements);
-	//	print_r ($this->script);
-		
-		$this->result = RestfulHelper::post($this->trace_uri, $this->script);
+	    $this->result = RestfulHelper::post($this->trace_uri, $this->script);
 	}
 }
 ?>
