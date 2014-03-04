@@ -70,16 +70,15 @@ public function load($log)
 		{
 		 $this->subjectId = $details['subject']['id'];
 		 if (array_key_exists ('old_title',$details['subject'])) {$this->subjectold_title = $details['subject']['old_title'];}
-		 if (array_key_exists ('new_title',$details['subject'])) {$this->subjectNew_title = $details['subject']['new_title'];}
+		// if ($details['subject']['new_title']) {$this->subjectNew_title = $details['subject']['new_title'];}
 		}
 		
 		
 		if (array_key_exists ('message',$details)) 
 		{
 		 $this->MessageId = $details['message']['id'];
-		 if (array_key_exists ('old_content',$details['message'])) {$this->MessageOldContent = $details['message']['old_content'];}
-		 
-		 if (array_key_exists ('new_content',$details['message'])) {$this->Messagenew_content = $details['message']['new_content'];}
+		// if ($details['message']['old_content']) {$this->MessageOldContent = $details['message']['old_content'];}
+		// if ($details['message']['new_content']) {$this->Messagenew_content = $details['message']['new_content'];}
 		}
 		if (array_key_exists ('post',$details)) 
 		{
