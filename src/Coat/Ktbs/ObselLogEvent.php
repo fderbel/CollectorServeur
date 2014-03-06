@@ -37,7 +37,7 @@ public $ResourceNode =null;
 public $ResourceType = null ;
 public function __construct($model_uri,$trace_uri)
 	{
-		$this->model_uri = $model_uri."/";
+		$this->model_uri = $model_uri;
 		$this->trace_uri = $trace_uri;
 	}	
 public function load($log)
@@ -47,7 +47,7 @@ public function load($log)
         $this->uri       = $this->trace_uri.$this->name;
 		$this->hasDate   = $log->getDateLog()->format('Y-m-d H:i:s');
 		$this->Subject   ="Obsel of Trace : ".$this->trace_uri;
-		$this->type      = $this->model_uri.$log->getAction();
+		$this->type      = $this->model_uri."#".$log->getAction();
 		// user information
 		$this->UserID    =$log->getDoer()->getId();
 		$this->UserName  =$log->getDoer()->getUsername();
@@ -92,7 +92,7 @@ public function load($log)
 	
 		$prefixes[] = "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .";
 		$prefixes[] = "@prefix ktbs: <http://liris.cnrs.fr/silex/2009/ktbs#> .";
-		$prefixes[] = "@prefix : <".$this->model_uri."> .";
+		$prefixes[] = "@prefix : <".$this->type."/> .";
 		
 		$statements[] = "<".$this->name."> a <".$this->type.">.";
 		$statements[] = "<".$this->name."> ktbs:hasTrace <> .";	

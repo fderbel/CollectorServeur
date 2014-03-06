@@ -67,9 +67,8 @@ class KtbsConfig
    }
    
    function getTraceName (AbstractWorkspace $workspace)
-   {      if ($workspace->getName()==="Espace personnel") {$trace_Name="espacepersonnel".$workspace->getId();}
-          else 
-          $trace_Name = $workspace->getName().$workspace->getCode();
+   {     
+          $trace_Name = str_replace(' ','',$workspace->getName()).$workspace->getCode();
           return $trace_Name ;
    }
   
