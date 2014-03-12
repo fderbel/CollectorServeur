@@ -35,6 +35,15 @@ public $Messagenew_content = null;
 public $postTitle = null ;
 public $ResourceNode =null;
 public $ResourceType = null ;
+public $ExerciceId = null;
+public $Exercisetitle=null;
+public	$ExerciseResult=null;
+public $BlogId=null;
+public $postBlogId=null;
+public	$blog_authorizeComment=null;
+public 	$blog_authorizeAnonymousComment=null;
+public	$blog_autoPublishPost=null;
+public	$blog_autoPublishComment =null;
 public function __construct($model_uri,$trace_uri)
 	{
 		$this->model_uri = $model_uri;
@@ -47,7 +56,7 @@ public function load($log)
         $this->uri       = $this->trace_uri.$this->name;
 		$this->hasDate   = $log->getDateLog()->format('Y-m-d H:i:s');
 		$this->Subject   ="Obsel of Trace : ".$this->trace_uri;
-		$this->type      = $this->model_uri.$log->getAction();
+		$this->type      = $this->model_uri."#".$log->getAction();
 		// user information
 		$this->UserID    =$log->getDoer()->getId();
 		$this->UserName  =$log->getDoer()->getUsername();
@@ -81,11 +90,37 @@ public function load($log)
 		 
 		 if (array_key_exists ('new_content',$details['message'])) {$this->Messagenew_content = $details['message']['new_content'];}
 		}
+		//post
 		if (array_key_exists ('post',$details)) 
 		{
 		$this->postTitle = $details['post']['title'];
+		//$this->postBlogId = $details['post']['blog'];
 		
 		}
+		// post config
+		if (array_key_exists ('blog',$details)) 
+		{
+		//var_dump ($details['blog']['changeSet']['authorizeComment'][0]);
+		if (array_key_exists ('authorizeComment',$details['blog']['changeSet'])) $this->blog_authorizeComment = ($details['blog']['changeSet']['authorizeComment'][1]) ? 'true' : 'false';
+		if (array_key_exists ('authorizeAnonymousComment',$details['blog']['changeSet'])) $this->blog_authorizeAnonymousComment = ($details['blog']['changeSet']['authorizeAnonymousComment'][1]) ? 'true' : 'false';
+		if (array_key_exists ('autoPublishPost',$details['blog']['changeSet'])) $this->blog_autoPublishPost = ($details['blog']['changeSet']['autoPublishPost'][1]) ? 'true' : 'false';
+		if (array_key_exists ('autoPublishComment',$details['blog']['changeSet'])) $this->blog_autoPublishComment = ($details['blog']['changeSet']['autoPublishComment'][1]) ? 'true' : 'false';
+		
+		
+		$this->BlogId = $details['blog']['blog'];
+		
+		}
+		
+		// exercice
+		
+		if (array_key_exists ('exercise',$details)) 
+		{
+		$this->ExerciceId = $details['exercise']['id'];
+		if (array_key_exists ('title',$details['exercise'])) {$this->Exercisetitle = $details['exercise']['title'];}
+		}
+		
+		if (array_key_exists ('result',$details)) {$this->ExerciseResult = $details['result'];}
+		
 }
 
 	public function dump(){
@@ -122,7 +157,24 @@ public function load($log)
 		if ($this->Messagenew_content) {$statements[] = "<".$this->name."> :hasTool_Messagenew_content ".'"'.$this->Messagenew_content.'"'." .";}
 		//blog
 		if ($this->postTitle) {$statements[] = "<".$this->name."> :hasTool_Post_Title ".'"'.$this->postTitle.'"'." .";}
+		//exercice
+		if ($this->ExerciceId) {$statements[] = "<".$this->name."> :hasTool_Exercice_Id ".'"'.$this->ExerciceId.'"'." .";}
+		if ($this->Exercisetitle) {$statements[] = "<".$this->name."> :hasTool_Exercise_Title ".'"'.$this->Exercisetitle.'"'." .";}
+		if ($this->ExerciseResult) {$statements[] = "<".$this->name."> :hasTool_Exercise_Result ".'"'.$this->ExerciseResult.'"'." .";}
+	    
+	   	if ($this->BlogId) {$statements[] = "<".$this->name."> :hasTool_BlogId ".'"'.$this->BlogId.'"'." .";}
+	   	if ($this->postBlogId) {$statements[] = "<".$this->name."> :hasTool_postBlogId ".'"'.$this->postBlogId.'"'." .";}
+	    if ($this->blog_authorizeComment !== null) {$statements[] = "<".$this->name."> :hasTool_blog_authorizeComment ".'"'.$this->blog_authorizeComment.'"'." .";}
+	   	if ($this->blog_authorizeAnonymousComment !== null) {$statements[] = "<".$this->name."> :hasTool_blog_authorizeAnonymousComment ".'"'.$this->blog_authorizeAnonymousComment.'"'." .";}
+	    if ($this->blog_autoPublishPost !== null) {$statements[] = "<".$this->name."> :hasTool_blog_autoPublishPost ".'"'.$this->blog_autoPublishPost.'"'." .";}
+		if ($this->blog_autoPublishComment !== null) {$statements[] = "<".$this->name."> :hasTool_blog_autoPublishComment ".'"'.$this->blog_autoPublishComment.'"'." .";}
+	
 		
+		
+		
+		
+		 
+	
 	    $this->script = implode("\n", $prefixes)."\n"
 						.implode("\n", $statements);
 		$this->numAttr = count($statements);
