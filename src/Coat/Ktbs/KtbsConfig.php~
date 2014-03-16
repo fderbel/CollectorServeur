@@ -18,8 +18,8 @@ class KtbsConfig
 
     function __construct ()
     {
-        $this->root = "localhost:8001/" ;
-        $this->model= "model1";
+        $this->root = "http://localhost:8001/" ;
+      //  $this->model= "model1";
         $root = new KtbsRoot($this->root);
         if ( $root->exist() ) {$this->exist= true;}
         else $this->exist= false ;
@@ -33,8 +33,8 @@ class KtbsConfig
         $BaseName = $this->getBaseName ($user);
         $Base= new Base ($this->root,$BaseName) ;
         if ( !$Base->exist() ) {$Base->dump();} 
-        $model = new TraceModel ($Base->uri, $this->model);
-        if ( !$model->exist() ) {$model->dump();} 
+      //  $model = new TraceModel ($Base->uri, $this->model);
+      // if ( !$model->exist() ) {$model->dump();} 
         }
     }
 
@@ -42,8 +42,9 @@ class KtbsConfig
     {  
        if ($this->exist)
         {
-       $DataTrace = $this->DataTrace ($user);
        $trace_Name = $this->getTraceName ($workspace);
+       $DataTrace = $this->DataTrace ($user,$trace_Name);
+      
        $trace = new Trace ($DataTrace["base"],$DataTrace["model"],$trace_Name);
        $trace->dump() ;	
        }
@@ -72,23 +73,26 @@ class KtbsConfig
           return $trace_Name ;
    }
   
-   function DataTrace (User $user)
+   function DataTrace (User $user , $trace_Name)
    {
         $BaseName1 = $this->getBaseName ($user);
        // $BaseName1 = $user->getUsername().$user->getId()."/";
         $Base1= new Base ($this->root,$BaseName1) ;
         if ( !$Base1->exist() ) {$Base1->dump();}
-        $model1 = new TraceModel ($Base1->uri, $this->model);
-        if ( !$model1->exist() ) {$model1->dump();}
+       $modelName ="model".$trace_Name;
+       $model1 = new TraceModel ($Base1->uri, $modelName);
+       if ( !$model1->exist() ) {$model1->dump();} 
+        
+       // $model1 = new TraceModel ($Base1->uri, $this->model);
+       // if ( !$model1->exist() ) {$model1->dump();}
 
         return array( "base"=>$Base1->uri,"model"=>$model1->uri);
    } 
     
    function DataObsel (User $user, AbstractWorkspace $workspace)
    {
-        $DataTrace1 = $this->DataTrace ($user);
-        //$trace_Name1= $workspace->getName().$workspace->getId()."/";
         $trace_Name1 = $this -> getTraceName ($workspace);
+        $DataTrace1 = $this->DataTrace ($user, $trace_Name1);
         $trace1 = new Trace ($DataTrace1["base"],$DataTrace1["model"],$trace_Name1);
         if ( !$trace1->exist() ) {$trace1->dump();}
 	

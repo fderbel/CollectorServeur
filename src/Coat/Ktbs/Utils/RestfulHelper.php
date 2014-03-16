@@ -71,8 +71,6 @@ class RestfulHelper{
 		curl_close($curl);
 		
 		$http_code = $infos["http_code"];
-		var_dump ($reponse);
-		var_dump ($http_code);
 		if($http_code == "200"|| $http_code == "303") return true; else return false;
 	}
 
