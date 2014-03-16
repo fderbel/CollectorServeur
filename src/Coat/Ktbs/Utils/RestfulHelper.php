@@ -64,13 +64,15 @@ class RestfulHelper{
 		
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);		
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 10);		
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
 		curl_close($curl);
 		
 		$http_code = $infos["http_code"];
-		
+		var_dump ($reponse);
+		var_dump ($http_code);
 		if($http_code == "200"|| $http_code == "303") return true; else return false;
 	}
 
