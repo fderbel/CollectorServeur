@@ -1,6 +1,6 @@
 <?php
 namespace Coat\Ktbs\Utils;
-use Coat\Ktbs\Utils\Log;
+
 
 /* This class is used to interact with KTBS.*/
 class RestfulHelper{
@@ -65,7 +65,7 @@ class RestfulHelper{
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPGET, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_TIMEOUT, 10);		
+		curl_setopt($curl, CURLOPT_TIMEOUT,4 );		
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
 		curl_close($curl);
