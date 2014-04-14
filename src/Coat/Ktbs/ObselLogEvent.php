@@ -2,9 +2,9 @@
 
 namespace Coat\Ktbs;
 
-use Coat\Ktbs\Utils\N3Parser;
 use Coat\Ktbs\Utils\RestfulHelper;
 use \DateTimeZone;
+use Claroline\ForumBundle\Entity\Subject;
 
 class ObselLogEvent {
 public $uri = null;	
@@ -148,7 +148,8 @@ public function load($log)
 		if ($this->newName) {$statements[] = "<".$this->name."> :hasTool_NewName ".'"'.$this->newName.'"'." .";}
 		if ($this->CategoryId) {$statements[] = "<".$this->name."> :hasTool_CategoryId ".'"'.$this->CategoryId.'"'." .";}
 		
-		if ($this->subjectId) {$statements[] = "<".$this->name."> :hasTool_subjectId ".'"'.$this->subjectId.'"'." .";}
+		if ($this->subjectId) {
+		$statements[] = "<".$this->name."> :hasTool_subjectId ".'"'.$this->subjectId.'"'." .";}
 		if ($this->MessageId) {$statements[] = "<".$this->name."> :hasTool_MessageId ".'"'.$this->MessageId.'"'." .";}
 		if ($this->subjectold_title) {$statements[] = "<".$this->name."> :hasTool_subjectOldContent ".'"'.$this->subjectold_title.'"'." .";}
 		
