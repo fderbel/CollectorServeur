@@ -18,7 +18,7 @@ class KtbsConfig
 
     function __construct ()
     {
-        $this->root = "http://http://ktbs.univ-lyon1.fr/" ;
+        $this->root = "http://ktbs.univ-lyon1.fr/" ;
       //  $this->model= "model1";
         $root = new KtbsRoot($this->root);
         if ( $root->exist() ) {$this->exist= true;}
