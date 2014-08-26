@@ -1,6 +1,7 @@
 <?php
 namespace Coat\Ktbs;
 use Coat\Ktbs\Utils\RestfulHelper;
+use Coat\Ktbs\Cache\KtbsResourceCache;
 
 
 class Base {
@@ -35,9 +36,23 @@ class Base {
 		RestfulHelper::post($this->root, $script);	
 	}
 	function exist(){
-        $this->exist = RestfulHelper::get($this->uri);
+        
+        $cache = new KtbsResourceCache($this->uri);
+		list($isOK, $retval) = $cache->read();
+		
+		if($isOK)
+			return $retval;
+		
+		$this->exist = RestfulHelper::get($this->uri);
+		
+		if($this->exist){
+			$cache = new KtbsResourceCache($this->uri);
+			$cache->write($this->exist);
+		}
 		
 		return $this->exist;
+        //$this->exist = RestfulHelper::get($this->uri);
+		//return $this->exist;
 	}
 }
 ?>

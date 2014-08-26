@@ -7,50 +7,49 @@ use \DateTimeZone;
 use Claroline\ForumBundle\Entity\Subject;
 
 class ObselLogEvent {
-public $uri = null;	
-public $name = null;	
-public $type = null;
-public $hasSuperObselType = null;
-public $model_uri = null;
-public $trace_uri = null;
-public $hasBegin = null;
-public $hasEnd = null;
-public $Subject = null;
-public $UserID = null;
-public $UserName = null;
-public $FirstName = null;
-public $LastName = null;
-public $ToolName = null;
-public $ToolType = null;
-public $ResourcePath=null ;
-public $CategoryId = null ;
-public $oldName = null ;
-public $newName = null;
-public $subjectId = null ;
-public $MessageId = null ;
-public $subjectold_title = null ;
-public $subjectNew_title = null;
-public $MessageOldContent = null;
-public $Messagenew_content = null;
-public $postTitle = null ;
-public $ResourceNode =null;
-public $ResourceType = null ;
-public $ExerciceId = null;
-public $Exercisetitle=null;
-public	$ExerciseResult=null;
-public $BlogId=null;
-public $postBlogId=null;
-public	$blog_authorizeComment=null;
-public 	$blog_authorizeAnonymousComment=null;
-public	$blog_autoPublishPost=null;
-public	$blog_autoPublishComment =null;
-public function __construct($model_uri,$trace_uri)
-	{
+    public $uri = null;	
+    public $name = null;	
+    public $type = null;
+    public $hasSuperObselType = null;
+    public $model_uri = null;
+    public $trace_uri = null;
+    public $hasBegin = null;
+    public $hasEnd = null;
+    public $Subject = null;
+    public $UserID = null;
+    public $UserName = null;
+    public $FirstName = null;
+    public $LastName = null;
+    public $ToolName = null;
+    public $ToolType = null;
+    public $ResourcePath=null ;
+    public $CategoryId = null ;
+    public $oldName = null ;
+    public $newName = null;
+    public $subjectId = null ;
+    public $MessageId = null ;
+    public $subjectold_title = null ;
+    public $subjectNew_title = null;
+    public $MessageOldContent = null;
+    public $Messagenew_content = null;
+    public $postTitle = null ;
+    public $ResourceNode =null;
+    public $ResourceType = null ;
+    public $ExerciceId = null;
+    public $Exercisetitle=null;
+    public	$ExerciseResult=null;
+    public $BlogId=null;
+    public $postBlogId=null;
+    public	$blog_authorizeComment=null;
+    public 	$blog_authorizeAnonymousComment=null;
+    public	$blog_autoPublishPost=null;
+    public	$blog_autoPublishComment =null;
+    
+    public function __construct($model_uri,$trace_uri){
 		$this->model_uri = $model_uri;
 		$this->trace_uri = $trace_uri;
 	}	
-public function load($log)
-{
+    public function load($log){
 	    
 	    $this->name      ="S_".$log->getAction()."_".rand();	
         $this->uri       = $this->trace_uri.$this->name;
@@ -170,13 +169,7 @@ public function load($log)
 	    if ($this->blog_autoPublishPost !== null) {$statements[] = "<".$this->name."> :hasTool_blog_autoPublishPost ".'"'.$this->blog_autoPublishPost.'"'." .";}
 		if ($this->blog_autoPublishComment !== null) {$statements[] = "<".$this->name."> :hasTool_blog_autoPublishComment ".'"'.$this->blog_autoPublishComment.'"'." .";}
 	
-		
-		
-		
-		
-		 
-	
-	    $this->script = implode("\n", $prefixes)."\n"
+		$this->script = implode("\n", $prefixes)."\n"
 						.implode("\n", $statements);
 		$this->numAttr = count($statements);
 	    $this->result = RestfulHelper::post($this->trace_uri, $this->script);

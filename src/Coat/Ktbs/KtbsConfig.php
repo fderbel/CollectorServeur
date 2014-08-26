@@ -8,95 +8,82 @@ use Coat\Ktbs\Trace;
 use Coat\Ktbs\TraceModel;
 use Coat\Ktbs\KtbsRoot;
 
-class KtbsConfig
+class KtbsConfig {
 
-{
-
-    public $root=null ;	
+    public $root=null ;
     public $model=null;
     public $exist=null;
+    public $BaseName=null;
+    public $trace_Name=null;
+    public $DataTrace=null;
+    public $DataObsel=null;
+    public $modelName=null;
 
-    function __construct ()
-    {
+    function __construct (User $user,AbstractWorkspace $workspace){
         $this->root = "http://ktbs.univ-lyon1.fr/" ;
-      //  $this->model= "model1";
         $root = new KtbsRoot($this->root);
-        if ( $root->exist() ) {$this->exist= true;}
-        else $this->exist= false ;
-
+        if ( $root->exist() ) 
+            {$this->exist= true;}
+        else 
+            $this->exist= false ;
+        $this->BaseName = $this->getBaseName ($user);
+        $this->trace_Name = str_replace(' ','',$workspace->getName()).$workspace->getCode();
+        $this->modelName ="model".$this->trace_Name;
+        $this->DataTrace = $this->DataTrace ($user);
+        $this->DataObsel = $this->DataObsel ($user,$workspace);
+        if ($this->exist) {
+            $this->createBase();
+            $this->createModel();
+            $this->createTrace();
+        }
     }
 
-    function createBase (User $user)
-    {   
-        if ($this->exist)
-        {
-        $BaseName = $this->getBaseName ($user);
-        $Base= new Base ($this->root,$BaseName) ;
+    function createBase (){   
+        $Base= new Base ($this->root,$this->BaseName) ;
         if ( !$Base->exist() ) {$Base->dump();} 
-      //  $model = new TraceModel ($Base->uri, $this->model);
-      // if ( !$model->exist() ) {$model->dump();} 
+    }
+    
+     function createModel (){   
+        $model = new TraceModel ($this->root.$this->BaseName, $this->modelName);
+        if ( !$model->exist() ) {$model->dump();}
+    }
+    
+    function createTrace (){  
+        $trace = new Trace ($this->DataTrace["baseURI"],$this->DataTrace["modelURI"],$this->trace_Name);
+        if ( !$trace->exist() ) {$trace->dump() ;}
+    }
+    
+    function createObsel ($log){
+        if ($this->exist) 
+        {
+            $obsel = new ObselLogEvent($this->DataObsel["modelURI"],$this->DataObsel["traceURI"]);
+            $obsel->load($log) ;
+            $obsel->dump() ;
         }
     }
-
-    function createTrace ( User $user, AbstractWorkspace $workspace )	
-    {  
-       if ($this->exist)
-        {
-       $trace_Name = $this->getTraceName ($workspace);
-       $DataTrace = $this->DataTrace ($user,$trace_Name);
-      
-       $trace = new Trace ($DataTrace["base"],$DataTrace["model"],$trace_Name);
-       $trace->dump() ;	
-       }
-    }	
     
-    function createObsel (User $user, AbstractWorkspace $workspace , $log)	
-    {
-        if ($this->exist)
-        {
-        $DataObsel = $this->DataObsel ($user,$workspace);
-        $obsel = new ObselLogEvent($DataObsel["model"],$DataObsel["trace"]);
-        $obsel->load($log) ;
-        $obsel->dump() ;
-        }
-    }	
-    
-   function getBaseName (User $user)
-   {
-         $BaseName = $user->getUsername().$user->getId()."/";
-         return $BaseName ;
+   function getBaseName (User $user){
+        $BaseName = $user->getUsername().$user->getId()."/";
+        return $BaseName ;
    }
    
-   function getTraceName (AbstractWorkspace $workspace)
-   {     
-          $trace_Name = str_replace(' ','',$workspace->getName()).$workspace->getCode();
-          return $trace_Name ;
+   function getTraceName (AbstractWorkspace $workspace){     
+        $trace_Name = str_replace(' ','',$workspace->getName()).$workspace->getCode();
+        return $trace_Name ;
    }
   
-   function DataTrace (User $user , $trace_Name)
-   {
-        $BaseName1 = $this->getBaseName ($user);
-       // $BaseName1 = $user->getUsername().$user->getId()."/";
-        $Base1= new Base ($this->root,$BaseName1) ;
-        if ( !$Base1->exist() ) {$Base1->dump();}
-       $modelName ="model".$trace_Name;
-       $model1 = new TraceModel ($Base1->uri, $modelName);
-       if ( !$model1->exist() ) {$model1->dump();} 
-        
-       // $model1 = new TraceModel ($Base1->uri, $this->model);
-       // if ( !$model1->exist() ) {$model1->dump();}
-
-        return array( "base"=>$Base1->uri,"model"=>$model1->uri);
+   function DataTrace (User $user){
+        $BaseName = $this->BaseName;
+        $BaseURI= $this->root.$BaseName;
+        $modelName ="model".$this->trace_Name;
+        $ModelURI= $this->root.$modelName; 
+        return array( "baseURI"=>$BaseURI,"modelURI"=>$ModelURI);
    } 
     
-   function DataObsel (User $user, AbstractWorkspace $workspace)
-   {
-        $trace_Name1 = $this -> getTraceName ($workspace);
-        $DataTrace1 = $this->DataTrace ($user, $trace_Name1);
-        $trace1 = new Trace ($DataTrace1["base"],$DataTrace1["model"],$trace_Name1);
-        if ( !$trace1->exist() ) {$trace1->dump();}
-	
-        return array("model"=>$DataTrace1["model"],"trace"=>$trace1->uri,"BaseURI"=>$DataTrace1["base"],"TraceName"=>"$trace_Name1");
+   function DataObsel (User $user, AbstractWorkspace $workspace){
+        $DataTrace = $this->DataTrace ($user);
+        $TraceURI= $this->root.$this->BaseName.$this->trace_Name."/";
+        return array("modelURI"=>$DataTrace["modelURI"],"traceURI"=>$TraceURI,"BaseURI"=>$DataTrace["baseURI"],"TraceName"=>$this->trace_Name);
    }  
  
 }

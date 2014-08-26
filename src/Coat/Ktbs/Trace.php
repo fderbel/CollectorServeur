@@ -3,7 +3,7 @@ namespace Coat\Ktbs;
 use Coat\Ktbs\Utils\RestfulHelper;
 use \DateTime ;
 use \DateTimeZone;
-
+use Coat\Ktbs\Cache\KtbsResourceCache;
 class Trace 
 {
     
@@ -44,8 +44,22 @@ class Trace
 	
 	function exist()
 	{
-	    $this->exist = RestfulHelper::get($this->uri);
-            return $this->exist;
+	    $cache = new KtbsResourceCache($this->uri);
+		list($isOK, $retval) = $cache->read();
+		
+		if($isOK)
+			return $retval;
+		
+		$this->exist = RestfulHelper::get($this->uri);
+		
+		if($this->exist){
+			$cache = new KtbsResourceCache($this->uri);
+			$cache->write($this->exist);
+		}
+		
+		return $this->exist;
+	        //$this->exist = RestfulHelper::get($this->uri);
+            //return $this->exist;
 	}
 	
 	function getTime()

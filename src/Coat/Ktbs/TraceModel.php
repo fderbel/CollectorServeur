@@ -1,7 +1,7 @@
 <?php
 namespace Coat\Ktbs;
 use Coat\Ktbs\Utils\RestfulHelper;
-use Coat\Ktbs\Cache\Cache;
+use Coat\Ktbs\Cache\KtbsResourceCache;
 
 class TraceModel {
 	public $uri = null;
@@ -30,8 +30,22 @@ class TraceModel {
 	
 	function exist()
 	{
-	$this->exist = RestfulHelper::get($this->uri);
-    return $this->exist;
+	//$this->exist = RestfulHelper::get($this->uri);
+    //return $this->exist;
+     $cache = new KtbsResourceCache($this->uri);
+		list($isOK, $retval) = $cache->read();
+		
+		if($isOK)
+			return $retval;
+		
+		$this->exist = RestfulHelper::get($this->uri);
+		
+		if($this->exist){
+			$cache = new KtbsResourceCache($this->uri);
+			$cache->write($this->exist);
+		}
+		
+		return $this->exist;
 	}
 		
 	
