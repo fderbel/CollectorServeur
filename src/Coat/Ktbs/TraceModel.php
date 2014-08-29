@@ -25,7 +25,8 @@ class TraceModel {
 	$script = 	implode("\n", $prefixes)."\n"
 					.implode("\n", $statements);
 		
-		RestfulHelper::post($this->base_uri, $script);	
+	$reponse = RestfulHelper::post($this->base_uri, $script);
+    return $reponse;
 	}
 	
 	function exist()

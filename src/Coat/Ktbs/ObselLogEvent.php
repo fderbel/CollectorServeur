@@ -172,7 +172,8 @@ class ObselLogEvent {
 		$this->script = implode("\n", $prefixes)."\n"
 						.implode("\n", $statements);
 		$this->numAttr = count($statements);
-	    $this->result = RestfulHelper::post($this->trace_uri, $this->script);
+	    $result = RestfulHelper::post($this->trace_uri, $this->script);
+	    return $result;
 	}
 }
 ?>

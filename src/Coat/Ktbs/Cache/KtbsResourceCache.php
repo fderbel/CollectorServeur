@@ -10,6 +10,7 @@ class KtbsResourceCache{
 	    
 	    $key = implode(";",array($resource_uri));
 		$this->cache_folder = dirname( __FILE__ )."/FilesCache";
+		
 		$this->expire_default = 7200;
 		$this->key = $key;
 		$this->key_md5 = get_class($this).md5($this->key);

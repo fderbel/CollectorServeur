@@ -31,14 +31,16 @@ class RestfulHelper{
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);		
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+		curl_setopt($curl, CURLOPT_TIMEOUT,2 );	
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
         curl_close($curl);
 		
 		$http_code = $infos["http_code"];
-		//print_r($http_code)	; print_r($reponse)	;
+		
 		if($http_code == "201") return true; 
-			else return $reponse;
+		    else if ($http_code == "404") return false;
+			    else  return $reponse;
 	}		
 	
 	
@@ -56,7 +58,7 @@ class RestfulHelper{
 		curl_close($curl);
 		
 		$http_code = $infos["http_code"];
-		//Log::writeRestfulLog("put", $url, $content, $http_code);
+		
 		if($http_code == "200") return true; else return false;
 	}
 
@@ -109,7 +111,7 @@ class RestfulHelper{
 		curl_close($curl);
 		
 		$http_code = $infos["http_code"];
-		//Log::writeRestfulLog("put", $url, $content, $http_code);
+		
 		if($http_code == "200") return true;
 			else return $reponse;
 	}

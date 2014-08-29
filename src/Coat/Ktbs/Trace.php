@@ -39,7 +39,8 @@ class Trace
 		$this->script = implode("\n", $prefixes)."\n"
 					.implode("\n", $statements);
 		
-		$this->result = RestfulHelper::post($this->base_uri, $this->script);
+		$result = RestfulHelper::post($this->base_uri, $this->script);
+		return $result;
 	}
 	
 	function exist()
