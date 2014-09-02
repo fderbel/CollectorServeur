@@ -2,7 +2,7 @@
 namespace Coat\Ktbs;
 
 use Claroline\CoreBundle\Entity\User;
-use Claroline\CoreBundle\Entity\Workspace\AbstractWorkspace;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
 use Coat\Ktbs\Base;
 use Coat\Ktbs\Trace;
 use Coat\Ktbs\TraceModel;
@@ -19,7 +19,7 @@ class KtbsConfig {
     private $TraceURI=null;
     private $BaseURI=null;
 
-    function __construct (User $user,AbstractWorkspace $workspace){
+    function __construct (User $user,Workspace $workspace){
         $this->root = "http://ktbs.univ-lyon1.fr/" ;
         
         $this->BaseName     = $user->getUsername().$user->getId()."/";
