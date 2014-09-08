@@ -27,7 +27,7 @@ class KtbsConfig {
         $this->trace_Name   = str_replace(' ','',$workspace->getName()).$workspace->getCode();
         $this->TraceURI     = $this->root.$this->BaseName.$this->trace_Name."/";
         $this->modelName    = "model".$this->trace_Name;
-        $this->ModelURI     = $this->root.$this->modelName; 
+        $this->ModelURI     =  $this->BaseURI.$this->modelName; 
     }
 
     function getTraceName(){
@@ -63,10 +63,10 @@ class KtbsConfig {
             {$this->createBase ();$trace->dump();}
     }
     
-    function createObsel ($log){
+    function createObsel ($log,$user){
        
             $obsel = new ObselLogEvent($this->ModelURI,$this->TraceURI);
-            $obsel->load($log) ;
+            $obsel->load($log,$user) ;
             $response = $obsel->dump() ;
               if (!$response)
             {$this->createTrace ();$obsel->dump() ;}

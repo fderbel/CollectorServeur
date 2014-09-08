@@ -49,7 +49,7 @@ class ObselLogEvent {
 		$this->model_uri = $model_uri;
 		$this->trace_uri = $trace_uri;
 	}	
-    public function load($log){
+    public function load($log,$user){
 	    
 	    $this->name      ="S_".$log->getAction()."_".rand();	
         $this->uri       = $this->trace_uri.$this->name;
@@ -57,10 +57,10 @@ class ObselLogEvent {
 		$this->Subject   ="Obsel of Trace : ".$this->trace_uri;
 		$this->type      = $this->model_uri."#".$log->getAction();
 		// user information
-		$this->UserID    =$log->getDoer()->getId();
-		$this->UserName  =$log->getDoer()->getUsername();
-		$this->FirstName =$log->getDoer()->getFirstName();
-		$this->LastName  =$log->getDoer()->getLastName();
+		$this->UserID    =$user->getId();
+		$this->UserName  =$user->getUsername();
+		$this->FirstName =$user->getFirstName();
+		$this->LastName  =$user->getLastName();
 		// tool information
 		$this->WorkspaceName = $log->getWorkspace()->getName();
 		if ($log->getResourceNode() ) 
