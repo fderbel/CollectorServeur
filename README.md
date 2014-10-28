@@ -10,4 +10,18 @@ KtbsRoot
 ====
 This class is used mainly to identify the KTBS using his URI.
 
+Base
+====
+This class is used mainly used to create a base in the Ktbs.
+
+Trace
+====
+This class is used mainly used to create a Stored Trace in the Ktbs.
+
+TraceModel
+====
+This class is used mainly to create a Trace model.
+
+
+
 
