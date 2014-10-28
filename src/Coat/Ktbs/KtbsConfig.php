@@ -21,7 +21,8 @@ class KtbsConfig {
 
     function __construct (User $user,Workspace $workspace){
         $this->root = "http://ktbs.univ-lyon1.fr/" ;
-        
+       //$this->root = "http://localhost:8001/";
+        //$this->root = "https://dsi-liris-silex.univ-lyon1.fr/protected/ktbs/";
         $this->BaseName     = $user->getUsername().$user->getId()."/";
         $this->BaseURI      = $this->root.$this->BaseName;
         $this->trace_Name   = str_replace(' ','',$workspace->getName()).$workspace->getCode();

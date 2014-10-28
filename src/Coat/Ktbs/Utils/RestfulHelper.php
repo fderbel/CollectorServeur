@@ -31,6 +31,7 @@ class RestfulHelper{
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);		
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."admin"); 
 		curl_setopt($curl, CURLOPT_TIMEOUT,2 );	
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
@@ -67,6 +68,8 @@ class RestfulHelper{
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPGET, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."admin");  
+
 		curl_setopt($curl, CURLOPT_TIMEOUT,4 );		
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
