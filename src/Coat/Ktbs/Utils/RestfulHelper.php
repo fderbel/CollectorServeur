@@ -31,7 +31,7 @@ class RestfulHelper{
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);		
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."admin"); 
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."tracemerulez"); 
 		curl_setopt($curl, CURLOPT_TIMEOUT,2 );	
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
@@ -53,6 +53,7 @@ class RestfulHelper{
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."tracemerulez");  
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
@@ -68,7 +69,7 @@ class RestfulHelper{
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPGET, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."admin");  
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."tracemerulez");  
 
 		curl_setopt($curl, CURLOPT_TIMEOUT,4 );		
 		$reponse = curl_exec($curl);
@@ -84,6 +85,7 @@ class RestfulHelper{
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_HTTPGET, true);
 		curl_setopt($curl, CURLOPT_HEADER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."tracemerulez");  
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);			
 		$response = curl_exec($curl);
 		$headers = curl_getinfo($curl);
@@ -108,6 +110,7 @@ class RestfulHelper{
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, "admin".":"."tracemerulez");  
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 		$reponse = curl_exec($curl);
 		$infos = curl_getinfo($curl);
